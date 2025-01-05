@@ -38,7 +38,7 @@ export default function (params) {
                             </template>
                         </div>
                         <!--Mobile-->
-                        <div class="mt-1 ml-2 lg:hidden md:flex sm:flex xs:flex" x-data="aclDropdownMenuButton({ items: mxNavigation_items })"></div>
+                        <div x-show="!!mxNavigation_items && !!mxNavigation_items[0]" class="mt-1 ml-2 lg:hidden md:flex sm:flex xs:flex" x-data="aclDropdownMenuButton({ items: mxNavigation_items })"></div>
 
                     </div>
                 </div>
