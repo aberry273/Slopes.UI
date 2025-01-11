@@ -34,7 +34,7 @@ export default function (params) {
                     </div>
                     <h2 class="text-base font-bold sm:text-lg md:text-xl"><a :href="mxCard_href" x-text="mxCard_title"></a></h2>
                     <p class="mt-2 text-sm text-gray-500" x-text="mxCard_text"></p>
-                    <div class="grid justify-items-end">
+                    <div class="grid justify-items-end" x-show="!!mxCard_href">
                         <a :href="mxCard_href" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Browse
                         </a>
