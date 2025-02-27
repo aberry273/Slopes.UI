@@ -38,6 +38,7 @@ export default function (params) {
             this.mxTable_headers = params.headers || [];
             this.mxTable_items = params.items || [];
             this.mxTable_class = params.class || '';
+            this.mxTable_query = params.query;
             this.mxTable_multiSelect = params.class || false;
             this.mxTable_page = params.page || 0;
             this.mxTable_pageSize = params.pageSize || 10;

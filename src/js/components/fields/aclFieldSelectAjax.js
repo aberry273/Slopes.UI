@@ -185,8 +185,8 @@ export default function (params) {
                             :required="mxField_required" 
                             :disabled="mxField_disabled"
                             x-show="!selectedItem"
-                            :value="queryText"
-                            x-model="queryText"
+                            :value="mxField_value || queryText"
+                            x-model="mxField_value || queryText"
                             :aria-invalid="mxField_ariaInvalid"
                             :pattern="mxField_pattern || null"
                             :aria-describedBy="mxField_areaDescribedBy || mxField_id"
@@ -208,13 +208,13 @@ export default function (params) {
                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" x-data="aclIconsSvg({icon: mxField_icon })"></svg>
                     </div>
 
-                    <div x-show="!mxField_disabled" class="pl-12 right-8 truncate">
+                    <div x-show="!mxField_disabled" class="right-8 truncate">
                         <span x-text="selectedItem ? selectedItem.key : mxField_placeholder" ></span>
-                        <div x-show="!!selectedItem" @click="cancelItem"
-                        x-data="aclButton({icon: 'close' })"
-                        class="absolute inset-y-0 right-0 flex items-center pr-2" ></svg>
-                    </span>
-
+                            <div x-show="!!selectedItem" @click="cancelItem"
+                            x-data="aclButton({icon: 'close' })"
+                            class="absolute inset-y-0 right-0 flex items-center pr-2" ></svg>
+                        </span>
+                    </div>
                 </button>
                 
                 <ul x-show="selectOpen"

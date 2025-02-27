@@ -1,5 +1,7 @@
 
 import aclFieldInput from './aclFieldInput.js'
+import aclFieldInputCardNumber from './aclFieldInputCardNumber.js'
+import aclFieldInputCardSecurityCode from './aclFieldInputCardSecurityCode.js'
 import aclFieldTextarea from './aclFieldTextarea.js'
 import aclFieldContentEditable from './aclFieldContentEditable.js'
 import aclFieldEditorJs from './aclFieldEditorJs.js'
@@ -12,6 +14,8 @@ import aclFieldCodeEditor from './aclFieldCodeEditor.js'
 import aclFieldSelectCheckbox from './aclFieldSelectCheckbox.js'
 
 export {
+    aclFieldInputCardNumber,
+    aclFieldInputCardSecurityCode,
     aclFieldInput,
     aclFieldTextarea,
     aclFieldContentEditable,

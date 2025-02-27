@@ -96,7 +96,7 @@ export default function (params) {
                     page: this.mxTable_page || 0,
                     pageSize: this.mxTable_pageSize || 10,
                     pages: this.mxTable_pages || 0,
-                    query: {
+                    query: this.mxTable_query || {
                         Name: this.queryText || ''
                     }
                 }

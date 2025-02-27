@@ -24,6 +24,7 @@ export default function (data) {
         get mxButton_iconClass() { return "inline-block  focus:ring-4 hover:text-gray-900 hover:bg-gray-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 focus:outline-none 0 rounded-lg text-sm p-1.5" },
         get mxButton_iconClassMuted() { return "inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" },
         get mxButton_labelClass() { return 'ml-auto text-xs tracking-widest opacity-60' },
+        get mxButton_submitClass() { return 'inline-block w-full px-5 py-4 text-lg font-medium text-center bg-blue-600 text-white dark:text-white transition duration-200  rounded-lg hover:bg-blue-700 ease' },
 
         // METHODS
     }

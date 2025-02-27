@@ -1,15 +1,17 @@
-import { mxContent, mxForm } from '/src/js/mixins/index.js';
+import { mxContent, mxForm, mxEvent } from '/src/js/mixins/index.js';
 
 export default function (params) {
     return {
         ...mxContent(params),
         ...mxForm(params),
+        ...mxEvent(params),
         // PROPERTIES
         header: '',
 
         // INIT
         init() {
             this._mxForm_SetValues(params);
+            this._mxContent_setValues(params);
             this.render();
         },
         // GETTERS
@@ -17,6 +19,7 @@ export default function (params) {
         updateField(ev) {
             const field = ev.detail;
             this._mxForm_SetFieldValue(this.mxForm_fields, field);
+            this.$dispatch(this.mxForm_fieldChangeEvent, field)
         },
         getPayload() {
             return !this.mxForm_isFile
@@ -25,7 +28,6 @@ export default function (params) {
         },
         async submit() {
             // else
-            this.mxForm_loading = true;
             try {
                 const payload = this.getPayload();
                 // if overwriting the submit function
@@ -33,6 +35,7 @@ export default function (params) {
                     this.mxForm_submit(payload);
                     return;
                 }
+                this.mxForm_loading = true;
                 const result =
                     !this.mxForm_isFile
                         ? await this._mxForm_SubmitAjaxRequest(this.mxForm_method, this.mxForm_action, payload)

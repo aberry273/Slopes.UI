@@ -4,6 +4,7 @@ export default function (data) {
         mxContent_item: {},
         mxContent_items: [],
         mxContent_img: '',
+        mxContent_btn: null,
         mxContent_title: '',
         mxContent_subtitle: '',
         mxContent_text: '',

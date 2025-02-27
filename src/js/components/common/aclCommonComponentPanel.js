@@ -34,7 +34,7 @@ export default function (params) {
         },
         render() {
             const html = `
-                <div class="mb-4 grid gap-4 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 sm:gap-8 lg:gap-16">
+                <div class="mb-4 grid gap-4 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 sm:gap-8 lg:gap-16">
                     <div class="flex flex-col overflow-x-scroll flex-1 mt-4 w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:px-8 md:px-4 sm:px-2 xs:px-2 py-2">
                         <div 
                             x-show="!!navigationData" 

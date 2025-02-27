@@ -9,6 +9,7 @@ export default function (data) {
         mxForm_event: '',
         mxForm_action: '',
         mxForm_method: '',
+        mxForm_fieldChangeEvent: 'onFormFieldChange',
         mxForm_loading: false,
         mxForm_response: null,
         mxForm_responseClass: '',
@@ -19,7 +20,7 @@ export default function (data) {
         // GETTERS
         get mxForm_titleClass() { return 'mb-3 text-xl font-medium text-gray-900 dark:text-white' },
         get mxForm_textClass() { return 'mb-5 text-sm font-medium text-gray-500 dark:text-gray-300' },
-        get mxForm_submitClass() { return 'inline-block w-full px-5 py-4 text-lg font-medium text-center bg-blue-600 text-white dark:text-white transition duration-200  rounded-lg hover:bg-blue-700 ease' },
+        get mxForm_submitClass() { return 'inline-block w-full px-5 py-4 text-lg font-medium text-center bg-primary-600 text-white dark:text-white transition duration-200  rounded-lg hover:bg-blue-700 ease' },
         get mxForm_submitInvalidClass() { return 'group-invalid:pointer-events-none group-invalid:opacity-30' },
         get mxForm_formClass() { return 'flex flex-col items-start justify-start w-full h-full max-w-md mx-auto  p-10 lg:p-16 xl:p-24' },
         get mxForm_formPadlessClass() { return 'flex flex-col items-start justify-start w-full h-full max-w-md mx-auto  p-4' },
