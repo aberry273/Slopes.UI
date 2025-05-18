@@ -95,10 +95,11 @@ import {
     aclSocialModalListChatPosts,
 } from './social/index.js'
 
-// PEERPAY
+// PAYMENTS
 import {
-    aclPeerpayPaymentForm,
-} from './peerpay/index.js'
+    aclPaymentsPaymentForm,
+    aclPaymentsBalanceCard
+} from './payments/index.js'
 
 // PLUGINS
 import { aclPluginEditorJs, aclPluginEditorJsParser } from './plugins/index.js'
@@ -203,8 +204,9 @@ export {
     aclSocialModalFormPost,
     aclSocialModalListChatPosts,
 
-    // PEERPAY
-    aclPeerpayPaymentForm,
+    // PAYMENTS
+    aclPaymentsPaymentForm,
+    aclPaymentsBalanceCard,
 
     // PLUGINS
     aclPluginEditorJs,

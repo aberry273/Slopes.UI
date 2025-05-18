@@ -90,6 +90,7 @@ export default function (params) {
         },
         async query() {
             // else
+            if (!this.mxFetch_url) return;
             this.mxFetch_loading = true;
             try {
                 const payload = {
