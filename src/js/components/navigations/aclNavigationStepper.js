@@ -11,6 +11,7 @@ export default function (params) {
         init() {
             this._mxNavigation_SetParams(params || {});
             this.setValues(params || {});
+            this.setPosition();
             this.render();
         },
         // GETTERS
@@ -21,8 +22,8 @@ export default function (params) {
         // Set position based on text input
         setPosition() {
             if (!this.mxNavigation_selected) return;
-            const index = this.mxNavigation_items.select(x => x.text).indexOf(this.mxNavigation_selected)
-            this.position = index > -1 ? index : 0;
+            const index = this.mxNavigation_items.map(x => x.text).indexOf(this.mxNavigation_selected)
+            this.position = index > -1 ? index+1 : 0;
         },
         setValues(params) {
         },
@@ -31,7 +32,7 @@ export default function (params) {
                 <ol class="flex py-2 mt-2 justify-between w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
                     <template x-for="(item, i) in mxNavigation_items">
                         <li class="flex flex-col items-center pa-4 px-8 sm:px-4" >
-                            <button @click="select(i)" class="bg-transparent hover:bg-blue-500 hover:text-white flex flex-col items-center">
+                            <button @click="select(i)" disabled class="bg-transparent hover:bg-blue-500 hover:text-white flex flex-col items-center">
                                 <div class="flex text-center items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
                                     <!--Tick icon-->
                                     <!--

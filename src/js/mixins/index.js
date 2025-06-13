@@ -23,6 +23,7 @@ import mxTable from './components/mxTable.js'
 import mxTheme from './global/mxTheme.js'
 import mxFetch from './global/mxFetch.js'
 import mxEvent from './global/mxEvent.js'
+import mxCommon from './global/mxCommon.js'
 import mxString from './global/mxString.js'
 // Other mixins
 import mxService from './other/mxService.js'
@@ -53,6 +54,7 @@ export {
     mxFetch,
     mxEvent,
     mxString,
+    mxCommon,
     // Other
     mxService,
 }

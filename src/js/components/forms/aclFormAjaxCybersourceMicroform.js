@@ -1,4 +1,4 @@
-import { mxContent, mxForm, mxFetch, mxField } from '/src/js/mixins/index.js';
+import { mxContent, mxForm, mxFetch, mxCommon, mxField } from '/src/js/mixins/index.js';
 
 export default function (params) {
     return {
@@ -6,6 +6,7 @@ export default function (params) {
         ...mxForm(params),
         ...mxField(params),
         ...mxFetch(params),
+        ...mxCommon(params),
         // PROPERTIES
         header: '',
         formData: {},
@@ -16,10 +17,20 @@ export default function (params) {
             ExpYear: null,
             SecurityCode: null,
         },
+        numberFieldContainerId: 'cardNumberContainer',
+        securityCodeFieldContainerId: 'securityCodeContainer',
+        accountNumberFieldContainerId: 'accountNumberContainer',
+        confirmAccountNumberFieldContainerId: 'confirmAccountNumberContainer',
+        routingNumberFieldContainerId: 'routingNumberContainer',
+        cardFields: [],
+        bankFields: [],
         cardDataValid: false,
+        paymentMethod: "card", //check
         jwkJson: null,
         loading: false,
         // INIT
+        //https://github.com/CyberSource/cybersource-flex-samples-node/blob/master/express-microform/views/index.ejs
+        //https://github.com/CyberSource/cybersource-flex-samples-node
         async init() {
             //override submit button
             //get values from card number, security code, expMonth and year
@@ -27,31 +38,46 @@ export default function (params) {
             //generate token
             //display errors
             this.formData = params;
-            this.jwkJson = JSON.parse(params.jwkJson);
+            this.jwkJson = params.jwkJson;//JSON.parse(params.jwkJson);
+            this.bankFields = params.bankFields;
+            this.cardFields = params.cardFields;
             this._mxFetch_setValues(params);
-
             this.formData.submit = this.onSubmit;
             this.render();
         },
         // GETTERS
-        // METHODS
+        // METHODS 
         onFieldChange(ev) {
             const field = ev.detail;
             switch (field.name) {
+                // Update this to retrieve the fieldvalue from cybersource values
                 case "Name":
                     this.secureCardData[field.name] = field.value;
+                    console.log(this.secureCardData)
                     break;
                 case "Number":
                     this.secureCardData[field.name] = field.value;
+                    this.$store.svcCybersource.setNumberField(field.value);
+                    console.log(this.secureCardData)
                     break;
                 case "ExpMonth":
                     this.secureCardData[field.name] = field.value;
+                    console.log(this.secureCardData)
                     break;
                 case "ExpYear":
                     this.secureCardData[field.name] = field.value;
+                    console.log(this.secureCardData)
                     break;
                 case "SecurityCode":
                     this.secureCardData[field.name] = field.value;
+                    console.log(this.secureCardData)
+                    break;
+                case "Payment Method":
+                    const pm = (field.value == 'Card')
+                        ? 'card'
+                        : 'check'
+                    this._mxCommon_UpdateRouteParam("pm", pm)
+                    window.location.reload();
                     break;
                 default:
                     return;
@@ -62,9 +88,8 @@ export default function (params) {
             await this.createToken(data, this.formData);
         },
         async loadForm(jwk) {
-            this.$store.svcCybersource.loadForm(jwk);
-            this.$store.svcCybersource.createNumberField();
-            this.$store.svcCybersource.createSecurityField();
+            console.log(jwk)
+            this.$store.svcCybersource.loadForm(this.paymentMethod, jwk);
         }, 
         //https://stackoverflow.com/questions/61501493/send-add-cvv-cvn-field-on-cybersource-flex-microform
         //https://developer.cybersource.com/docs/cybs/en-us/digital-accept-flex-api/developer/ctv/rest/flex-api/microform-integ-v2/api-reference-v2.html
@@ -110,7 +135,10 @@ export default function (params) {
                 const result = await this.$fetch.POST(formData.action, submittedData);
 
                 if (result != null && result.status == 200) {
-                   
+                    if (this.mxForm_event) {
+                        this.$dispatch(this.mxForm_event, result)
+                    }
+                    this.$dispatch(this.localEvent, result)
                 }
                 else {
                     let message = result.message;
@@ -188,10 +216,19 @@ export default function (params) {
                     </template>
 
                     <span x-data="{ init() { this.loadForm(this.jwkJson) } }"></span>
-
+                    <!--
+                     <div class="form-group">
+                        <label for="cardholderName">Name</label>
+                        <input id="cardholderName" class="form-control" name="cardholderName" placeholder="Name on the card">
+                        <label id="cardNumber-label">Card Number</label>
+                        <div id="number-container" class="form-control"></div>
+                        <label for="securityCode-container">Security Code</label>
+                        <div id="securityCode-container" class="form-control"></div>
+                    </div>
+                    -->
                     <!--Hidden PCI Compliant fields-->
                     <div class="form-group" x-show="false">
-                        
+                       
                         <input type="hidden" id="flexresponse" name="flexresponse">
                     </div>
 
