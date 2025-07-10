@@ -35,6 +35,7 @@ export default function (params) {
                 const formData = this._mxForm_GetFormData(this.form);
                 const response = await this.$fetch.POST(this.form.action, formData);
 
+                this.setBalanceDetails(response);
                 if (response.status == 200) {
                     this.clearFields();
                 } else {
@@ -46,16 +47,20 @@ export default function (params) {
             }
             this.mxForm_loading = false;
         },
+        setBalanceDetails(data) {
+            this.mxContent_subtitle = data.subtitle;
+            this.mxContent_title = data.title;
+        },
         render() {
             const html = `
                 <div class="mb-4 grid gap-4 xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-1 sm:gap-8 lg:gap-16">
                     <div class="flex flex-col overflow-x-none flex-1 mt-4 w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:px-8 md:px-4 sm:px-2 xs:px-2 py-2">
-                        <div x-show="mxForm_loading" x-data="aclCommonProgress({})"></div>
+                        <div class="absolute" x-show="mxForm_loading" x-data="aclCommonProgress({})"></div>
 
                         <div class="relative flex flex-col w-full h-full lg:my-0">
                             <div class="flex flex-col items-start tracking-tight w-full">
-                                <div class="relative text-center w-full">
-                                    <p class="mb-4 text-gray-600 uppercase" x-text="mxContent_subtitle"></p>
+                                <div class="blur-2xl relative text-center w-full">
+                                    <p class="mb-4 text-gray-600 uppercase blur-2xl" x-text="mxContent_subtitle" :class="mxForm_loading ? 'blur-2xl' : ''"></p>
                                     <h2 class="text-5xl mb-4 font-bold text-gray-900 xl:text-6xl" x-text="mxContent_title"></h2>
                                 </div>
                             </div>

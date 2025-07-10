@@ -25,8 +25,6 @@ export default function (params) {
         init() {
             this._mxField_setValues(params);
             this.setValues(params);
-            const item = this.mxField_items.filter(x => x.value == this.mxField_value)[0]
-            this.selectedItem = item;
             this.render();
 
             this.$watch('selectOpen', () => {
@@ -47,12 +45,22 @@ export default function (params) {
         setValues(params) {
             this.areItemsObject = params.areItemsObject;
 
+            this.mxField_items = params.items;
+            let item = null;
             if (this.areItemsObject === false && !typeof params.items[0] === 'object') {
                 params.items = params.items.map(x => {
                     return this._mxField_ConvertItemStringToObject(x)
                 });
+                item = this.mxField_value;
             }
-            this.mxField_items = params.items;
+            else {
+                item = this.mxField_items.filter(x => x.value == this.mxField_value)[0]
+            }
+            if(!!item) this.selectItem(item);
+
+           // this.selectedItem = item;
+            //this.mxField_value = item.value;
+
             this.mxFetch_url = params.settings;
             if (!this.mxField_placeholder) this.mxField_placeholder = 'Select item';
             this.selectId = this.$id('select');
@@ -84,10 +92,12 @@ export default function (params) {
         },
         selectItem(item) {
             this.selectedItem = item;
+            this.selectableItemActive = item;
             this.selectOpen = false;
-            this.$refs.selectButton.focus();
+            if (this.$refs.selectButton) this.$refs.selectButton.focus();
             this.mxField_value = item.value;
             this._mxField_onChange(this.mxField_value)
+            
         },
         itemSelected(item) {
             if (!this.selectedItem || !item) return;
