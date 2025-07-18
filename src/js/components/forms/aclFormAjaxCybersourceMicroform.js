@@ -53,24 +53,19 @@ export default function (params) {
                 // Update this to retrieve the fieldvalue from cybersource values
                 case "Name":
                     this.secureCardData[field.name] = field.value;
-                    console.log(this.secureCardData)
                     break;
                 case "Number":
                     this.secureCardData[field.name] = field.value;
                     this.$store.svcCybersource.setNumberField(field.value);
-                    console.log(this.secureCardData)
                     break;
                 case "ExpMonth":
                     this.secureCardData[field.name] = field.value;
-                    console.log(this.secureCardData)
                     break;
                 case "ExpYear":
                     this.secureCardData[field.name] = field.value;
-                    console.log(this.secureCardData)
                     break;
                 case "SecurityCode":
                     this.secureCardData[field.name] = field.value;
-                    console.log(this.secureCardData)
                     break;
                 case "Payment Method":
                     const pm = (field.value == 'Card')
@@ -88,7 +83,6 @@ export default function (params) {
             await this.createToken(data, this.formData);
         },
         async loadForm(jwk) {
-            console.log(jwk)
             this.$store.svcCybersource.loadForm(this.paymentMethod, jwk);
         }, 
         //https://stackoverflow.com/questions/61501493/send-add-cvv-cvn-field-on-cybersource-flex-microform

@@ -19,7 +19,7 @@ export default function (params) {
         updateField(ev) {
             const field = ev.detail;
             this._mxForm_SetFieldValue(this.mxForm_fields, field);
-            this.$dispatch(this.mxForm_fieldChangeEvent, field)
+            this.$dispatch(this.mxForm_fieldChangeEvent, field);
         },
         getPayload() {
             return !this.mxForm_isFile

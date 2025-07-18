@@ -46,6 +46,7 @@ import {
 } from './forms/index.js'
 // FIELDS
 import {
+    aclFieldLabel,
     aclFieldInput,
     // Cybersource
     aclFieldInputAccountNumber,
@@ -159,6 +160,7 @@ export {
     aclFormAjaxStripeCard,
     aclFormAjaxStripeBank,
     // INPUTS
+    aclFieldLabel,
     aclFieldInput,
 
     aclFieldPaymentMethod,

@@ -1,29 +1,34 @@
 import { mxField } from '/src/js/mixins/index.js';
 
 export default function (params) {
-	return {
+    return {
         ...mxField(params),
         // PROPERTIES
         type: '',
         value: null,
         placeholder: '',
         cssClass: '',
+        label: '',
         // INIT
         init() {
             this._mxField_setValues(params);
-            this.render(); 
+            this.setValues(params);
+            this.render();
         },
         // GETTERS
         // METHODS
         setValues(params) {
-   
+            this.label = params.label;
+        },
+        onChange(ev) {
+            this._mxField_onChange(this.mxField_value)
         },
         toggle() {
             this.mxField_value = !this.mxField_value;
             this._mxField_onChange(this.mxField_value)
         },
         render() {
-            const html =  `
+            const html = `
                 <div class="flex items-center justify-start space-x-2 py-2">
                     <input   
                         class="peer"  
@@ -55,10 +60,10 @@ export default function (params) {
                     </button>
                 
                     <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')" 
-                        :class="{ 'text-blue-600': mxField_value, 'text-gray-400': ! mxField_value }"
-                        class="text-xl select-none"
+                        :class="{ 'text-blue-600': mxField_value, 'text-gray-900': ! mxField_value }"
+                        class="font-medium select-none"
                         x-cloak
-                        x-text="mxField_label"> 
+                        x-text="label || mxField_name">
                     </label>
                 </div>
                 
@@ -66,6 +71,6 @@ export default function (params) {
                 </span>
             `
             this.$nextTick(() => { this.$root.innerHTML = html });
-      },
+        },
     }
 }
