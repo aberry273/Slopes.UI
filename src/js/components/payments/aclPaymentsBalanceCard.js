@@ -1,4 +1,4 @@
-import { mxContent, mxNavigation, mxForm } from '/src/js/mixins/index.js';
+import { mxContent, mxNavigation, mxForm, mxEvent } from '/src/js/mixins/index.js';
 import * as components from '/src/js/components/index.js'
 
 
@@ -7,6 +7,7 @@ export default function (params) {
         ...mxContent(params),
         ...mxForm(params),
         ...mxNavigation(params),
+        ...mxEvent(params),
         // PROPERTIES
         component: 'aclCommonSpinner',
         componentData: {},
@@ -22,6 +23,11 @@ export default function (params) {
             this.setValues(params || {});
             this.render();
             await this.submit();
+
+            this._mxEvent_On(this.form.event, async (params) => {
+                if(!!params) this.setValues(params || {});
+                await this.submit();
+            })
         },
         // GETTERS
         // METHODS
@@ -35,7 +41,7 @@ export default function (params) {
                 const formData = this._mxForm_GetFormData(this.form);
                 const response = await this.$fetch.POST(this.form.action, formData);
 
-                this.setBalanceDetails(response);
+                this.setCardContent(response);
                 if (response.status == 200) {
                     this.clearFields();
                 } else {
@@ -47,9 +53,10 @@ export default function (params) {
             }
             this.mxForm_loading = false;
         },
-        setBalanceDetails(data) {
-            this.mxContent_subtitle = data.subtitle;
+        setCardContent(data) {
             this.mxContent_title = data.title;
+            this.mxContent_subtitle = data.subtitle;
+            this.mxContent_text = data.text;
         },
         render() {
             const html = `
@@ -59,9 +66,10 @@ export default function (params) {
 
                         <div class="relative flex flex-col w-full h-full lg:my-0">
                             <div class="flex flex-col items-start tracking-tight w-full">
-                                <div class="blur-2xl relative text-center w-full">
-                                    <p class="mb-4 text-gray-600 uppercase blur-2xl" x-text="mxContent_subtitle" :class="mxForm_loading ? 'blur-2xl' : ''"></p>
-                                    <h2 class="text-5xl mb-4 font-bold text-gray-900 xl:text-6xl" x-text="mxContent_title"></h2>
+                                <div class="blur-2xl relative text-start w-full">
+                                    <div class="xs:text-1xl sm:text-2xl md:text-4xl lg:text-4xl xl:text-4xl break-all mb-4 font-bold text-gray-900 xl:text-6xl" x-html="mxContent_title"></div>
+                                    <div class="mb-4 text-gray-600 uppercase " x-html="mxContent_subtitle" :class="mxForm_loading ? 'blur-2xl' : ''"></div>
+                                    <div x-html="mxContent_text"></div>
                                 </div>
                             </div>
                         </div>

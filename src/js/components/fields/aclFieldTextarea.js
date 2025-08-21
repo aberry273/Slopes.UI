@@ -1,7 +1,7 @@
 import { mxField } from '/src/js/mixins/index.js';
 
 export default function (params) {
-	return {
+    return {
         ...mxField(params),
         // PROPERTIES
         type: '',
@@ -11,7 +11,7 @@ export default function (params) {
         // INIT
         init() {
             this._mxField_setValues(params);
-            this.render(); 
+            this.render();
         },
         // GETTERS
         // METHODS
@@ -19,12 +19,12 @@ export default function (params) {
 
         },
         render() {
-            const html =  `
+            const html = `
                 <textarea
                     :type="mxField_type"
                     :placeholder="mxField_placeholder"
                     class="peer" 
-                    :class="mxField_cssClass || mxField_inputClass"
+                    :class="_mxField_GetFieldClass"
                     :id="mxField_id"
                     :name="mxField_name"
                     :min="mxField_min"
@@ -50,6 +50,6 @@ export default function (params) {
                 </span>
             `
             this.$nextTick(() => { this.$root.innerHTML = html });
-      },
+        },
     }
 }

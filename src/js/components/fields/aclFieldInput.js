@@ -39,6 +39,7 @@ export default function (params) {
                         :min="mxField_min"
                         :required="mxField_required"
                         :max="mxField_max"
+                        :step=".000001"
                         :disabled="mxField_disabled"
                         :value="mxField_value"
                         x-model="mxField_value"

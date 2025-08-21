@@ -41,7 +41,7 @@ export default function (params) {
         },
         // GETTERS
         // METHODS 
-        setValues(params) { 
+        setValues(params) {
             this.areItemsObject = params.areItemsObject;
 
             if (this.areItemsObject === false && !typeof params.items[0] === 'object') {
@@ -55,7 +55,7 @@ export default function (params) {
         },
         selectableItemIsActive(item) {
             return this.selectableItemActive && this.selectableItemActive.value == item.value;
-        }, 
+        },
         selectScrollToActiveItem() {
             if (this.selectableItemActive) {
                 this.activeElement = document.getElementById(this.selectableItemActive.value + '-' + this.selectId)
@@ -87,7 +87,7 @@ export default function (params) {
         },
         itemSelected(item) {
             if (!this.selectedItem || !item) return;
-
+            
             if (this.areItemsObject) {
                 return this.selectedItem.value == item.value
             }
@@ -100,11 +100,12 @@ export default function (params) {
             let cssClass = 'relative text-xl px-4 py-4 min-h-[38px] flex items-center justify-between w-full py-2 pl-3 pr-10 text-left placeholder-gray-400 bg-gray-200 border rounded-md shadow-sm cursor-default border-neutral-200/70 focus:outline-none text-sm focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400';
 
             if (!!this.mxField_icon) cssClass = `ps-10 p-2.5 ${cssClass}`;
+            if (this.mxField_disable) cssClass += ' text-gray-500 bg-gray-100'
             return cssClass;
         },
         inputButtonClass() {
             if (this.mxField_disabled) {
-                if (!!this.mxField_icon) return `${this.mxField_class} ps-10 p-2.5`;
+                if (!!this.mxField_icon) return `${this.mxField_class} ps-0 p-2.5`;
                 return this.mxField_class;
             }
             return this.defaultClass();
@@ -129,12 +130,12 @@ export default function (params) {
                     
                 <button type="button" x-ref="selectButton"
                     :disabled="mxField_disabled"
-                    @click="selectOpen=!selectOpen"
+                    @click="selectOpen =! selectOpen"
                     :class="inputButtonClass">
-                    <div x-show="mxField_icon" class="absolute ml-2 pl-1 inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <div x-show="mxField_icon && !mxField_disabled" class="absolute ml-2 pl-1 inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" x-data="aclIconsSvg({icon: mxField_icon })"></svg>
                     </div>
-                    <span x-text="selectedItem ? selectedItem.key : mxField_placeholder" class="truncate">Select Item</span>
+                    <span x-text="selectedItem ? (selectedItem.key || selectedItem) : mxField_placeholder" class="truncate">Select Item</span>
              
                     <span x-show="!mxField_disabled" class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5 text-gray-400"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd"></path></svg>

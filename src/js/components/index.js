@@ -4,6 +4,8 @@ import { aclExampleComponent } from './_example/index.js'
 import {
     aclContentSection,
     aclContentGridListing,
+    aclContentAccordion,
+    aclContentStepper
 } from './content/index.js'
 // MEDIA
 import { aclMediaImage, aclMediaVideo, aclMedia } from './media/index.js'
@@ -105,7 +107,8 @@ import {
 // PAYMENTS
 import {
     aclPaymentsPaymentForm,
-    aclPaymentsBalanceCard
+    aclPaymentsBalanceCard,
+    aclPaymentsStatusStepper
 } from './payments/index.js'
 
 // PLUGINS
@@ -120,6 +123,8 @@ export {
     // CONTEMT
     aclContentSection,
     aclContentGridListing,
+    aclContentAccordion,
+    aclContentStepper,
     // MEDIA
     aclMediaImage,
     aclMediaVideo,
@@ -223,6 +228,7 @@ export {
     // PAYMENTS
     aclPaymentsPaymentForm,
     aclPaymentsBalanceCard,
+    aclPaymentsStatusStepper,
 
     // PLUGINS
     aclPluginEditorJs,

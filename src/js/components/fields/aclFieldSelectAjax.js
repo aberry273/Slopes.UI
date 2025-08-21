@@ -152,16 +152,11 @@ export default function (params) {
         inputButtonClass() {
             if (this.mxField_disabled) {
                 if (!!this.mxField_icon) return `${this.mxField_class} ps-10 p-2.5`;
+                this.mxField_class += ' bg-gray-100 text-gray-500'
                 return this.mxField_class;
             }
             return this.defaultClass();
-        },
-        inputClass() {
-            let cssClass = this.mxField_class || this.mxField_inputClass;
-            if (!!this.mxField_icon) return `${cssClass} ps-10 p-2.5`;
-            return cssClass;
-        },
-
+        }, 
         cancelItem() {
             this.selectedItem = null;
             this.selectOpen = false;
@@ -191,7 +186,7 @@ export default function (params) {
 
                          <input
                             :placeholder="mxField_placeholder"
-                            :class="inputClass"
+                            :class="_mxField_GetFieldClass"
                             :required="mxField_required" 
                             :disabled="mxField_disabled"
                             x-show="!selectedItem"
