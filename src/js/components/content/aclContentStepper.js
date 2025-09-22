@@ -1,76 +1,116 @@
-import { mxContent } from '/src/js/mixins/index.js';
+import { mxContent, mxNavigation, mxForm, mxEvent } from '/src/js/mixins/index.js';
+import * as components from '/src/js/components/index.js'
+
 
 export default function (params) {
     return {
         ...mxContent(params),
-        // PROPERTIES
-        open: [],
-        showTooltip: false,
+        ...mxForm(params),
+        ...mxNavigation(params),
+        ...mxEvent(params),
+        // PROPERTIES 
+        items: [], 
+        contextStage: null,
+        interval: null,
+        iteration: 0,
+        maxInterval: 10,
+        intervalCount: 0,
+        successIcon: 'checkCircle',
+        failedIcon: 'xCircle',
+        inProgressIcon: 'ellipsisHorizontalCircle',
         // INIT
-        init() {
-            this._mxContent_setValues(params);
+        async init() {
+            if (!params) return;
+            const self = this;
+            this._mxForm_SetValues(params.form || {});
+            this._mxContent_setValues(params.card || {});
+            this.setValues(params || {});
             this.render();
+            await this.submit();
+
+            this._mxEvent_On(this.form.event, async (params) => {
+                if(!!params) this.setValues(params || {});
+                await this.submit();
+            })
+
+            if (params.items == null) return;
+             
+            this.iteration = this.items.map(x => x.showProgress).indexOf(true);
+            if (this.iteration == -1) {
+                this.iteration = 0;
+                // Set the first vlaue to be in progress by default
+                this.items[0].showProgress = true;
+            }
+            this.interval = setInterval(async function () {
+                // method to be executed;
+                self.submit();
+                self.intervalCount++;
+                if (self.intervalCount == self.maxInterval) {
+                    self.cancelTimer();
+                    self.setStageNoResponse(self.items[self.iteration]);
+                }
+            }, 2000);
+
         },
         // GETTERS
         // METHODS
-        isOpen(i) {
-            if (!this.open) return false;
-            return this.open.indexOf(i) > -1
+
+        setValues(params) {
+            params = params || {};
+            this.items = params.items;
+            this.form = params.form;
         },
-        toggle(i) {
-            if (!this.open) return;
-            const index = this.open.indexOf(i);
-            if (index == -1) this.open.push(i);
-            else this.open.splice(index, 1);;
+        cancelTimer() {
+            clearInterval(this.interval);
         },
-        textColourClass(col, i) {
-            console.log(!!col.complete)
-            if (!!col.complete)
-                return 'text-green-600';
-            else if (!col.complete)
-                return 'text-red-600';
-            else
-                return 'text-gray-600';
+        setStageNoResponse(step) {
+            step.showProgress = false;
+            step.success = false;
+            step.icon = 'exclamationCircle';
+            step.text = 'No update from server';
+            step.title += '*';
         },
-        stepClass(col, i) {
-            if (i == this.mxContent_items.length - 1) {
-                return ''
+        setStageFromResponse(step, data) {
+            step.success = data.success;
+            step.subtitle = data.substatus;
+            if (step.success === null) return;
+            step.showProgress = false;
+            var icon = (step.success == true) ? 'checkCircle' : 'xCircle'
+            step.icon = icon;
+        },
+        setStageFailed() {
+
+        },
+        async submit() {
+            this.mxForm_loading = true;
+            try {
+                var operation = this.items[this.iteration].title;
+                const formData = {
+                    operation: operation
+                }
+                const response = await this.$fetch.PUT(this.form.action, formData);
+                const data = response.data;
+                this.setStageFromResponse(this.items[this.iteration], data);
+                if (data.success) {
+                    this.iteration++;
+                    this.items[this.iteration].showProgress = true
+                    this.intervalCount = 0;
+                }
+                this.$dispatch('submit', formData)
+            } catch (e) {
+                //console.log(e);
             }
-            else {
-                return `md:w-full w-fit sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`
-            }
+            this.mxForm_loading = false;
+        },
+        setCardContent(data) {
+            this.mxContent_title = data.title;
+            this.mxContent_subtitle = data.subtitle;
+            this.mxContent_text = data.text;
         },
         render() {
             const html = `
-            <ol @mouseover.away="open = []" class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-                <template x-for="(col, i) in mxContent_items || []">
-                    <div 
-                        class="flex  items-center dark:text-blue-500"
-                        :class="stepClass(col, i)">
+                <div x-data="aclContentStepper({items: items})"></div>
 
-                        <div class="flex items-center text-left after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500">
-
-                            <!--Icon-->
-                            <span  class="flex items-center justify-center w-8 h-8">
-                                <svg :class="textColourClass(col, i)" class="w-10 h-10" x-data="aclIconsSvg({icon: col.icon })"></svg>
-                            </span>
-
-                            <!--Content-->
-                            <div @mouseover="toggle(i)" class="flex flex-col min-w-156 pl-1" style="min-width: 120px;" >
-                                <div class="flex flex-row">
-                                    <p :class="textColourClass(col, i)" x-text="col.title"></p>
-                                </div>
-                                <div :class="textColourClass(col, i)" class="text-sm" x-text="col.subtitle"></div>
-                            </div>
-                        </div>
-
-                        <!--Tooltip-->
-                        <div role="tooltip" x-show="isOpen(i)" class="absolute z-10 w-56 -my-10 inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-100 tooltip dark:bg-gray-700">
-                            <div x-html="col.text">
-                        </div>
-                    </div>
-                </template>
-            </ol>  
             `
             this.$nextTick(() => { this.$root.innerHTML = html });
         }
